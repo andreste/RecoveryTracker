@@ -48,6 +48,14 @@ struct CorrelationTests {
         #expect(Correlation(xLabel: "", yLabel: "", r: -0.64, note: "").filledSegments == 6)
     }
 
+    // Regression: filledSegments must clamp to 10 even when |r| exceeds 1.0,
+    // matching the view layer's min(10, ...) so the meter never overflows.
+    @Test func filledSegmentsClampToTen() {
+        #expect(Correlation(xLabel: "", yLabel: "", r: 1.0, note: "").filledSegments == 10)
+        #expect(Correlation(xLabel: "", yLabel: "", r: 1.5, note: "").filledSegments == 10)
+        #expect(Correlation(xLabel: "", yLabel: "", r: -1.5, note: "").filledSegments == 10)
+    }
+
     @Test func strengthLabelDescribesMagnitudeAndDirection() {
         #expect(Correlation(xLabel: "", yLabel: "", r: 0.71, note: "").strengthLabel == "Strong positive")
         #expect(Correlation(xLabel: "", yLabel: "", r: 0.58, note: "").strengthLabel == "Moderate positive")

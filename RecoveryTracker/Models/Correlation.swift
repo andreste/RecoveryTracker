@@ -19,7 +19,7 @@ struct Correlation: Identifiable, Equatable {
     var isPositive: Bool { r > 0 }
 
     // 0–10 filled segments for the strength meter.
-    var filledSegments: Int { Int((abs(r) * 10).rounded()) }
+    var filledSegments: Int { min(10, Int((abs(r) * 10).rounded())) }
 
     var strengthLabel: String {
         let magnitude = abs(r)
