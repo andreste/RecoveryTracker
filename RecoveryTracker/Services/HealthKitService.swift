@@ -98,9 +98,9 @@ final class HealthKitService: HealthDataProviding {
         return workouts.map { workout in
             let energy = workout.statistics(for: Self.activeEnergyType)?
                 .sumQuantity()?.doubleValue(for: .kilocalorie())
-            let distance = workout.allStatistics.values
-                .compactMap { $0.sumQuantity()?.doubleValue(for: .meter()) }
-                .first
+            let distance = Self.distanceType(for: workout.workoutActivityType).flatMap {
+                workout.statistics(for: $0)?.sumQuantity()?.doubleValue(for: .meter())
+            }
             let raw = RawWorkoutSample(
                 activityType: UInt(workout.workoutActivityType.rawValue),
                 start: workout.startDate,
@@ -127,6 +127,21 @@ final class HealthKitService: HealthDataProviding {
               let kcal = stats.sumQuantity()?.doubleValue(for: .kilocalorie())
         else { return nil }
         return HealthKitMapping.trainingLoad(activeEnergyKilocalories: kcal)
+    }
+
+    // The distance quantity type that matches a workout's activity, or nil for
+    // activities without a meaningful distance (strength, yoga, etc.).
+    private static func distanceType(for activity: HKWorkoutActivityType) -> HKQuantityType? {
+        switch activity {
+        case .running, .walking, .hiking:
+            return HKQuantityType(.distanceWalkingRunning)
+        case .cycling:
+            return HKQuantityType(.distanceCycling)
+        case .swimming:
+            return HKQuantityType(.distanceSwimming)
+        default:
+            return nil
+        }
     }
 
     // MARK: - Private query helpers
@@ -183,7 +198,7 @@ final class HealthKitService: HealthDataProviding {
         guard let samples = try? await descriptor.result(for: store) else { return [] }
         return samples.compactMap { sample -> RawSleepSegment? in
             guard let stage = HealthKitMapping.sleepStage(forHKValue: sample.value) else { return nil }
-            let minutes = Int(sample.endDate.timeIntervalSince(sample.startDate) / 60)
+            let minutes = Int((sample.endDate.timeIntervalSince(sample.startDate) / 60).rounded())
             return RawSleepSegment(stage: stage, minutes: minutes)
         }
     }
