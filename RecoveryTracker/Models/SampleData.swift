@@ -40,6 +40,29 @@ extension SleepBreakdown {
                                        coreMinutes: 202, awakeMinutes: 24)
 }
 
+// 28-day HRV (ms) / training-load (au) fixtures for the Trends dual-line chart,
+// mirroring the design mockup. Used when HealthKit yields nothing (simulator).
+enum TrendsSample {
+    static let hrv: [Double] = [
+        62, 58, 60, 64, 66, 63, 59, 55, 52, 58, 62, 64, 68, 70,
+        67, 63, 66, 70, 72, 69, 65, 60, 63, 68, 71, 74, 70, 72
+    ]
+    static let load: [Double] = [
+        240, 260, 310, 180, 200, 420, 380, 340, 200, 150, 260, 310, 290, 260,
+        200, 420, 440, 360, 260, 200, 300, 460, 420, 360, 260, 180, 260, 310
+    ]
+    // A flat resting-HR / sleep-quality companion series so the InsightEngine can
+    // still compute non-trivial correlations on the sample path.
+    static let restingHR: [Double] = [
+        54, 56, 53, 52, 51, 55, 57, 58, 59, 56, 54, 53, 52, 51,
+        53, 56, 58, 55, 53, 52, 54, 57, 56, 54, 52, 50, 53, 51
+    ]
+    static let sleepQuality: [Double] = [
+        82, 78, 84, 88, 86, 80, 76, 74, 72, 79, 83, 85, 88, 90,
+        87, 81, 79, 84, 89, 88, 85, 80, 83, 87, 90, 92, 88, 91
+    ]
+}
+
 extension Insight {
     static let sample = Insight(
         title: "HRV trending up",
