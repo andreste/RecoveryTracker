@@ -117,6 +117,11 @@ struct TrainingView: View {
     }
 }
 
-#Preview {
+#Preview("Light") {
     TrainingView()
+}
+
+#Preview("Dark") {
+    TrainingView()
+        .preferredColorScheme(.dark)
 }

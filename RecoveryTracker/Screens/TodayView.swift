@@ -291,6 +291,11 @@ private enum MetricStyle {
     }
 }
 
-#Preview {
+#Preview("Light") {
     TodayView()
+}
+
+#Preview("Dark") {
+    TodayView()
+        .preferredColorScheme(.dark)
 }
