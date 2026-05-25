@@ -245,6 +245,11 @@ struct TrendsView: View {
     }
 }
 
-#Preview {
+#Preview("Light") {
     TrendsView()
+}
+
+#Preview("Dark") {
+    TrendsView()
+        .preferredColorScheme(.dark)
 }
