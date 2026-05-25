@@ -7,7 +7,7 @@ struct ScoreRing: View {
     var showLabel: Bool = true
 
     private var color: Color { ScoreHelpers.color(for: value) }
-    private var label: (String, String) { ScoreHelpers.label(for: value) }
+    private var label: (status: String, advice: String) { ScoreHelpers.label(for: value) }
 
     var body: some View {
         ZStack {
