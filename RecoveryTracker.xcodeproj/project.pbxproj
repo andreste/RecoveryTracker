@@ -32,6 +32,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		EDBACF2B2FC3EB0A00B53931 /* RecoveryTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A1B2C3D4E5F600000000FEED /* Exceptions for "RecoveryTracker" folder in "RecoveryTracker" target */,
+			);
 			path = RecoveryTracker;
 			sourceTree = "<group>";
 		};
@@ -46,6 +49,16 @@
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A1B2C3D4E5F600000000FEED /* Exceptions for "RecoveryTracker" folder in "RecoveryTracker" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = EDBACF282FC3EB0A00B53931 /* RecoveryTracker */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		EDBACF262FC3EB0A00B53931 /* Frameworks */ = {
@@ -400,8 +413,8 @@
 				DEVELOPMENT_TEAM = GB7AG2E4X2;
 				CODE_SIGN_ENTITLEMENTS = RecoveryTracker/RecoveryTracker.entitlements;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Recovery Tracker reads your HRV, resting heart rate, sleep, and workouts from Apple Health to calculate your daily recovery readiness.";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RecoveryTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -434,8 +447,8 @@
 				DEVELOPMENT_TEAM = GB7AG2E4X2;
 				CODE_SIGN_ENTITLEMENTS = RecoveryTracker/RecoveryTracker.entitlements;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Recovery Tracker reads your HRV, resting heart rate, sleep, and workouts from Apple Health to calculate your daily recovery readiness.";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RecoveryTracker/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
