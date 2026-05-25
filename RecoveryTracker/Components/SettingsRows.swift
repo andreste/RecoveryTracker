@@ -11,7 +11,7 @@ struct SettingsGroup<Content: View>: View {
         }
         .background(Color.rtCard)
         .cornerRadius(RTRadius.card)
-        .padding(.horizontal, RTSpacing.screen)
+        .padding(.horizontal, RTSpacing.cardPad)
     }
 }
 
