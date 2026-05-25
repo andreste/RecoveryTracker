@@ -1,9 +1,9 @@
 # Xcode
+xcuserdata/
 *.xcworkspace/xcuserdata/
 *.xcodeproj/xcuserdata/
 *.xcodeproj/project.xcworkspace/xcuserdata/
 *.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-xcuserdata/
 DerivedData/
 *.moved-aside
 *.pbxuser
@@ -25,13 +25,16 @@ build/
 *.dSYM.zip
 *.dSYM
 
+# Swift Package Manager
+.build/
+.swiftpm/
+
 # CocoaPods
 Pods/
 *.xcworkspace
 
-# Swift Package Manager
-.build/
-.swiftpm/
+# Carthage
+Carthage/Build/
 
 # macOS
 .DS_Store
