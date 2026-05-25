@@ -1,12 +1,27 @@
 import SwiftUI
 
+// Coarse readiness tier used for color coding (3 bands).
+// Distinct from the 5-tier status/advice label below.
+enum ScoreBand {
+    case poor, moderate, good
+}
+
 enum ScoreHelpers {
-    // Score → brand color
-    // ≥75: teal (Good), 55–74: amber (Moderate), <55: coral (Poor)
+    // Score → band
+    // ≥75: good, 55–74: moderate, <55: poor
+    static func band(for score: Int) -> ScoreBand {
+        if score >= 75 { return .good }
+        if score >= 55 { return .moderate }
+        return .poor
+    }
+
+    // Score → brand color (teal / amber / coral)
     static func color(for score: Int) -> Color {
-        if score >= 75 { return .rtTeal }
-        if score >= 55 { return .rtAmber }
-        return .rtCoral
+        switch band(for: score) {
+        case .good:     return .rtTeal
+        case .moderate: return .rtAmber
+        case .poor:     return .rtCoral
+        }
     }
 
     // Score → (status, advice) pair
