@@ -1,21 +1,29 @@
-//
-//  ContentView.swift
-//  RecoveryTracker
-//
-//  Created by Andres Trevino on 5/24/26.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectedTab: RootTab = .today
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView(selection: $selectedTab) {
+            ForEach(RootTab.allCases, id: \.self) { tab in
+                tabView(for: tab)
+                    .tabItem {
+                        Label(tab.title, systemImage: tab.systemImage)
+                    }
+                    .tag(tab)
+            }
         }
-        .padding()
+        .tint(.rtTeal)
+    }
+
+    @ViewBuilder
+    private func tabView(for tab: RootTab) -> some View {
+        switch tab {
+        case .today:    TodayView()
+        case .trends:   TrendsView()
+        case .training: TrainingView()
+        case .settings: SettingsView()
+        }
     }
 }
 
