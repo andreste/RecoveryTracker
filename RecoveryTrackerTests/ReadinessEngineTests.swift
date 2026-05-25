@@ -122,4 +122,24 @@ struct ReadinessEngineTests {
         // Last entry is today and matches the headline score.
         #expect(result.history.last?.score == result.score.value)
     }
+
+    @Test func emptyInputsProduceNeutralScoreWithoutCrashing() {
+        let empty = ReadinessEngine.Inputs(hrv: [], restingHR: [], sleepQuality: [], trainingLoad: [])
+        let result = ReadinessEngine.evaluate(empty)
+        #expect(result.score.value == 50)
+        #expect(result.history.count == 7)
+    }
+
+    @Test func nonFiniteInputsDoNotCrash() {
+        // HealthKit can hand us garbage; NaN/inf must not trap on the Int conversion.
+        let inputs = ReadinessEngine.Inputs(
+            hrv:          series(baseline: 60, today: .nan),
+            restingHR:    series(baseline: 55, today: .infinity),
+            sleepQuality: series(baseline: 80, today: 92),
+            trainingLoad: series(baseline: 320, today: 200)
+        )
+        let result = ReadinessEngine.evaluate(inputs)
+        #expect(result.score.value >= 0)
+        #expect(result.score.value <= 100)
+    }
 }

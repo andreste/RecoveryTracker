@@ -158,6 +158,8 @@ enum ReadinessEngine {
     }
 
     private static func clampScore(_ value: Double) -> Int {
-        Int(min(max(value.rounded(), 0), 100))
+        // Guard against NaN/inf from upstream data — Int(NaN) would trap.
+        guard value.isFinite else { return 50 }
+        return Int(min(max(value.rounded(), 0), 100))
     }
 }
