@@ -176,10 +176,21 @@ final class HealthKitService: HealthDataProviding {
     // night as the 18-hour window ending at noon, which captures an evening
     // bedtime through a late morning wake-up.
     private func sleepSegments(forDayEnding day: Date) async -> [RawSleepSegment] {
-        let calendar = Calendar.current
+        guard let window = Self.sleepWindow(forDayEnding: day) else { return [] }
+        return await sleepSegments(start: window.start, end: window.end)
+    }
+
+    // Pure date-window math for `sleepSegments(forDayEnding:)`, factored out so
+    // it can be unit-tested without HealthKit. The night is the 18-hour window
+    // ending at noon of `day`, but the end is clamped to `now` so a morning
+    // open (before noon) doesn't push the end into the future and invert/empty
+    // the window — which would silently drop last night's sleep.
+    static func sleepWindow(forDayEnding day: Date, now: Date = Date(),
+                            calendar: Calendar = .current) -> (start: Date, end: Date)? {
         let noon = calendar.date(bySettingHour: 12, minute: 0, second: 0, of: day) ?? day
-        guard let start = calendar.date(byAdding: .hour, value: -18, to: noon) else { return [] }
-        return await sleepSegments(start: start, end: noon)
+        let end = min(noon, now)
+        guard let start = calendar.date(byAdding: .hour, value: -18, to: end) else { return nil }
+        return (start, end)
     }
 
     private func sleepSegments(days: Int) async -> [RawSleepSegment] {
