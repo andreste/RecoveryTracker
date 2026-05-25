@@ -103,6 +103,20 @@ struct TrainingViewModelTests {
         #expect(week.map(\.load).reduce(0, +) == 960)
     }
 
+    // Regression: weeklyLoad used to force-unwrap the per-day date. With a safe
+    // guard it must never trap and must always return seven well-formed days
+    // (correct letters, zero load for any day whose date could not be derived),
+    // even for extreme boundary weekStarts.
+    @Test func weeklyLoadDoesNotTrapForExtremeWeekStart() {
+        let letters = ["M", "T", "W", "T", "F", "S", "S"]
+        for weekStart in [Date.distantPast, Date.distantFuture] {
+            let week = TrainingViewModel.weeklyLoad(from: [], weekStart: weekStart)
+            #expect(week.count == 7)
+            #expect(week.map(\.day) == letters)
+            #expect(week.allSatisfy { $0.load == 0 && $0.isRest })
+        }
+    }
+
     @Test func restDaysAreZeroAndFlagged() {
         var comps = DateComponents()
         comps.year = 2026; comps.month = 5; comps.day = 18

@@ -125,7 +125,9 @@ final class TrainingViewModel: ObservableObject {
         let start = calendar.startOfDay(for: weekStart)
 
         return (0..<7).map { offset in
-            let dayStart = calendar.date(byAdding: .day, value: offset, to: start)!
+            guard let dayStart = calendar.date(byAdding: .day, value: offset, to: start) else {
+                return DayLoad(day: letters[offset], load: 0)
+            }
             let total = workouts
                 .filter { calendar.isDate($0.date, inSameDayAs: dayStart) }
                 .map(load(for:))
