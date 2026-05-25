@@ -7,6 +7,21 @@ extension ReadinessScore {
     static let sample = ReadinessScore(value: 78, baselineDelta: 8)
 }
 
+extension ReadinessDay {
+    // A 7-day readiness history ending today, mirroring the design mockup. Used
+    // by the Today bar chart when HealthKit yields nothing (simulator/previews).
+    static let sampleHistory: [ReadinessDay] = {
+        let scores = [62, 71, 58, 74, 81, 67, 78]
+        let calendar = Calendar.current
+        let startOfToday = calendar.startOfDay(for: Date())
+        return scores.enumerated().map { index, score in
+            let offset = scores.count - 1 - index
+            let date = calendar.date(byAdding: .day, value: -offset, to: startOfToday) ?? startOfToday
+            return ReadinessDay(date: date, score: score)
+        }
+    }()
+}
+
 extension DailyMetrics {
     static let sample = DailyMetrics(
         hrv: Metric(kind: .hrv, value: 68, unit: "ms",
