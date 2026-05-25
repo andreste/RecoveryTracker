@@ -5,6 +5,14 @@ struct DualLineChart: View {
     let load: [Double]   // Training load in au (~100–480 range)
     var chartHeight: CGFloat = 140
 
+    // The two series come from independent HealthKit queries (HRV samples vs.
+    // per-day workout load) and are not guaranteed to be the same length. Both
+    // are indexed in lockstep, so clamp to the shorter one to avoid reading
+    // past the end of either array.
+    static func renderablePointCount(hrv: [Double], load: [Double]) -> Int {
+        min(hrv.count, load.count)
+    }
+
     var body: some View {
         GeometryReader { geo in
             ChartCanvas(
@@ -28,7 +36,7 @@ private struct ChartCanvas: View {
     private let hMin: Double = 45, hMax: Double = 80
     private let lMin: Double = 100, lMax: Double = 480
 
-    private var n: Int { hrv.count }
+    private var n: Int { DualLineChart.renderablePointCount(hrv: hrv, load: load) }
     private var iw: CGFloat { width - padH * 2 }
     private var ih: CGFloat { height - padV * 2 }
     private var stepX: CGFloat { n > 1 ? iw / CGFloat(n - 1) : iw }
